@@ -44,7 +44,9 @@ public:
         data_file.open("data.bin", std::ios::binary | std::ios::in | std::ios::out);
         index_file.open("index.bin", std::ios::binary | std::ios::in | std::ios::out);
 
-        index_file.read(reinterpret_cast<char*>(bucket_heads.data()), BUCKETS * sizeof(int32_t));
+        if (index_file) {
+            index_file.read(reinterpret_cast<char*>(bucket_heads.data()), BUCKETS * sizeof(int32_t));
+        }
     }
 
     ~KVStore() {
