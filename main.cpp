@@ -37,14 +37,15 @@ class KVStore {
 
 public:
     KVStore() : bucket_heads(BUCKETS, -1) {
-        // Ensure files exist
-        { std::ofstream d("data.bin", std::ios::binary); }
-        { std::ofstream i("index.bin", std::ios::binary); }
+        // Use a more reliable way to ensure files exist without truncating them
+        { std::ofstream d("data.bin", std::ios::binary | std::ios::app); }
+        { std::ofstream i("index.bin", std::ios::binary | std::ios::app); }
 
         data_file.open("data.bin", std::ios::binary | std::ios::in | std::ios::out);
         index_file.open("index.bin", std::ios::binary | std::ios::in | std::ios::out);
 
         if (index_file) {
+            index_file.seekg(0, std::ios::beg);
             index_file.read(reinterpret_cast<char*>(bucket_heads.data()), BUCKETS * sizeof(int32_t));
         }
     }
