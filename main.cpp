@@ -72,6 +72,7 @@ public:
         Record new_rec;
         new_rec.deleted = 0;
         new_rec.index_len = (uint8_t)s.length();
+        std::memset(new_rec.index, 0, 64);
         std::memcpy(new_rec.index, s.c_str(), s.length());
         new_rec.value = v;
         new_rec.next_offset = bucket_heads[bucket];
